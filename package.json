@@ -39,10 +39,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pranay/relentless-js.git"
+    "url": "https://github.com/PranaytheSingh/relentless-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/pranay/relentless-js/issues"
+    "url": "https://github.com/PranaytheSingh/relentless-sdk/issues"
   },
   "homepage": "https://relentless.so",
   "devDependencies": {
