@@ -1,0 +1,57 @@
+{
+  "name": "relentless-sdk",
+  "version": "0.1.0",
+  "description": "Official JavaScript SDK for Relentless CMS - Turn your Notion databases into REST APIs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "prepublishOnly": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "cms",
+    "notion",
+    "api",
+    "headless-cms",
+    "content",
+    "rest-api",
+    "sdk",
+    "client",
+    "relentless"
+  ],
+  "author": "Relentless CMS",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pranay/relentless-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pranay/relentless-js/issues"
+  },
+  "homepage": "https://relentless.so",
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {},
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
