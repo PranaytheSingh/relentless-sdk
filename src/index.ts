@@ -54,7 +54,7 @@ export class RelentlessClient {
    * Build full URL with API key
    */
   private buildUrl(path: string, params?: Record<string, string>): string {
-    const url = new URL(`${this.baseUrl}/api/v1/${this.apiPath}${path}`)
+    const url = new URL(`${this.baseUrl}/api/v1/public/${this.apiPath}${path}`)
     url.searchParams.set('api_key', this.apiKey)
 
     if (params) {
@@ -69,9 +69,9 @@ export class RelentlessClient {
   /**
    * Make HTTP request with error handling
    */
-  private async request<T>(url: string): Promise<T> {
+  private async request<T>(url: string, options?: RequestInit): Promise<T> {
     try {
-      const response = await fetch(url)
+      const response = await fetch(url, options)
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
@@ -143,6 +143,29 @@ export class RelentlessClient {
   async batch(slugs: string[]): Promise<RelentlessItem[]> {
     const promises = slugs.map(slug => this.getBySlug(slug))
     return Promise.all(promises)
+  }
+
+  /**
+   * Insert a new row into the Notion database
+   * @param row - Object with property names as keys
+   * @returns Created item response
+   * @example
+   * await client.insert({
+   *   Email: 'user@example.com',
+   *   Name: 'John Doe',
+   *   'Submitted At': new Date().toISOString()
+   * })
+   */
+  async insert(row: Record<string, any>): Promise<any> {
+    const url = this.buildUrl('/insert')
+
+    return this.request(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(row),
+    })
   }
 }
 
