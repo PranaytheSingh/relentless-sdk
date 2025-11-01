@@ -1,6 +1,6 @@
 {
   "name": "relentless-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Official JavaScript SDK for Relentless CMS - Turn your Notion databases into REST APIs",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
