@@ -6,6 +6,8 @@
 export interface RelentlessConfig {
   /** Your API key from Relentless dashboard */
   apiKey: string
+  /** Your username (used in API URL namespace) */
+  username: string
   /** The API path/name (e.g., 'blog', 'products') */
   apiPath: string
   /** Base URL of the Relentless API (defaults to production) */
@@ -41,11 +43,13 @@ export class RelentlessError extends Error {
  */
 export class RelentlessClient {
   private apiKey: string
+  private username: string
   private apiPath: string
   private baseUrl: string
 
   constructor(config: RelentlessConfig) {
     this.apiKey = config.apiKey
+    this.username = config.username
     this.apiPath = config.apiPath
     this.baseUrl = config.baseUrl || 'https://api.relentless.so'
   }
@@ -54,7 +58,7 @@ export class RelentlessClient {
    * Build full URL with API key
    */
   private buildUrl(path: string, params?: Record<string, string>): string {
-    const url = new URL(`${this.baseUrl}/api/v1/public/${this.apiPath}${path}`)
+    const url = new URL(`${this.baseUrl}/api/v1/public/${this.username}/${this.apiPath}${path}`)
     url.searchParams.set('api_key', this.apiKey)
 
     if (params) {
@@ -171,13 +175,14 @@ export class RelentlessClient {
 
 /**
  * Create a new Relentless client instance
- * @param config - Configuration object with apiKey and apiPath
+ * @param config - Configuration object with apiKey, username, and apiPath
  * @returns Client instance with list, getBySlug, index, and batch methods
  * @example
  * import { createClient } from 'relentless-sdk'
  *
  * const blog = createClient({
  *   apiKey: 'your-api-key',
+ *   username: 'johndoe',
  *   apiPath: 'blog'
  * })
  *

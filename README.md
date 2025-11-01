@@ -19,6 +19,7 @@ import { createClient } from 'relentless-sdk'
 
 const blog = createClient({
   apiKey: 'your-api-key',
+  username: 'johndoe',  // Your Relentless username
   apiPath: 'blog'
 })
 
@@ -31,15 +32,18 @@ const post = await blog.getBySlug('hello-world')
 
 ## Configuration
 
-Create a client by providing your API key and API path:
+Create a client by providing your API key, username, and API path:
 
 ```javascript
 const client = createClient({
   apiKey: 'your-api-key',      // Get this from your Relentless dashboard
+  username: 'johndoe',         // Your Relentless username (see Settings)
   apiPath: 'blog',             // The API path you configured
   baseUrl: 'https://api.relentless.so' // Optional, defaults to production
 })
 ```
+
+**Finding your username:** Go to your [Relentless dashboard](https://relentless.so/settings) → Settings. Your username is displayed under "Account" (e.g., `@johndoe`).
 
 ## API Methods
 
@@ -110,6 +114,7 @@ import { createClient, RelentlessItem, RelentlessConfig } from 'relentless-sdk'
 
 const config: RelentlessConfig = {
   apiKey: 'your-api-key',
+  username: 'johndoe',
   apiPath: 'blog'
 }
 
@@ -145,6 +150,7 @@ import { createClient } from 'relentless-sdk'
 
 const blog = createClient({
   apiKey: process.env.RELENTLESS_API_KEY!,
+  username: process.env.RELENTLESS_USERNAME!,
   apiPath: 'blog'
 })
 
@@ -172,6 +178,7 @@ import { useState, useEffect } from 'react'
 
 const blog = createClient({
   apiKey: import.meta.env.VITE_RELENTLESS_API_KEY,
+  username: import.meta.env.VITE_RELENTLESS_USERNAME,
   apiPath: 'blog'
 })
 
@@ -201,6 +208,7 @@ import { createClient } from 'relentless-sdk'
 
 const products = createClient({
   apiKey: process.env.RELENTLESS_API_KEY,
+  username: process.env.RELENTLESS_USERNAME,
   apiPath: 'products'
 })
 
