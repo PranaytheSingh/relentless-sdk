@@ -4,8 +4,6 @@
  */
 
 export interface RelentlessConfig {
-  /** Your API key from Relentless dashboard */
-  apiKey: string
   /** Your username (used in API URL namespace) */
   username: string
   /** The API path/name (e.g., 'blog', 'products') */
@@ -42,24 +40,21 @@ export class RelentlessError extends Error {
  * Relentless API Client
  */
 export class RelentlessClient {
-  private apiKey: string
   private username: string
   private apiPath: string
   private baseUrl: string
 
   constructor(config: RelentlessConfig) {
-    this.apiKey = config.apiKey
     this.username = config.username
     this.apiPath = config.apiPath
     this.baseUrl = config.baseUrl || 'https://api.relentless.so'
   }
 
   /**
-   * Build full URL with API key
+   * Build full URL for public API
    */
   private buildUrl(path: string, params?: Record<string, string>): string {
     const url = new URL(`${this.baseUrl}/api/v1/public/${this.username}/${this.apiPath}${path}`)
-    url.searchParams.set('api_key', this.apiKey)
 
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -150,44 +145,32 @@ export class RelentlessClient {
   }
 
   /**
-   * Insert a new row into the Notion database
-   * @param row - Object with property names as keys
-   * @returns Created item response
+   * Get the database schema (field names and types)
+   * @returns Schema object with field definitions
    * @example
-   * await client.insert({
-   *   Email: 'user@example.com',
-   *   Name: 'John Doe',
-   *   'Submitted At': new Date().toISOString()
-   * })
+   * const schema = await client.getSchema()
+   * console.log(schema) // { Title: 'title', Content: 'rich_text', ... }
    */
-  async insert(row: Record<string, any>): Promise<any> {
-    const url = this.buildUrl('/insert')
-
-    return this.request(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(row),
-    })
+  async getSchema(): Promise<Record<string, any>> {
+    return this.request<Record<string, any>>(this.buildUrl('/schema'))
   }
 }
 
 /**
  * Create a new Relentless client instance
- * @param config - Configuration object with apiKey, username, and apiPath
- * @returns Client instance with list, getBySlug, index, and batch methods
+ * @param config - Configuration object with username and apiPath
+ * @returns Client instance with list, getBySlug, index, batch, and getSchema methods
  * @example
  * import { createClient } from 'relentless-sdk'
  *
  * const blog = createClient({
- *   apiKey: 'your-api-key',
  *   username: 'johndoe',
  *   apiPath: 'blog'
  * })
  *
  * const posts = await blog.list()
  * const post = await blog.getBySlug('hello-world')
+ * const schema = await blog.getSchema()
  */
 export function createClient(config: RelentlessConfig): RelentlessClient {
   return new RelentlessClient(config)

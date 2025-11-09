@@ -18,9 +18,8 @@ yarn add relentless-sdk
 import { createClient } from 'relentless-sdk'
 
 const blog = createClient({
-  apiKey: 'your-api-key',
   username: 'johndoe',  // Your Relentless username
-  apiPath: 'blog'
+  apiPath: 'blog'       // The API path you configured
 })
 
 // Get all posts
@@ -28,15 +27,17 @@ const posts = await blog.list()
 
 // Get a single post by slug
 const post = await blog.getBySlug('hello-world')
+
+// Get database schema
+const schema = await blog.getSchema()
 ```
 
 ## Configuration
 
-Create a client by providing your API key, username, and API path:
+Create a client by providing your username and API path:
 
 ```javascript
 const client = createClient({
-  apiKey: 'your-api-key',      // Get this from your Relentless dashboard
   username: 'johndoe',         // Your Relentless username (see Settings)
   apiPath: 'blog',             // The API path you configured
   baseUrl: 'https://api.relentless.so' // Optional, defaults to production
@@ -44,6 +45,8 @@ const client = createClient({
 ```
 
 **Finding your username:** Go to your [Relentless dashboard](https://relentless.so/settings) → Settings. Your username is displayed under "Account" (e.g., `@johndoe`).
+
+**Note:** This SDK uses the public API endpoints which do not require authentication.
 
 ## API Methods
 
@@ -105,6 +108,17 @@ const posts = await client.batch(['post-1', 'post-2', 'post-3'])
 
 **Returns:** `Promise<RelentlessItem[]>` (same order as input)
 
+### `getSchema()`
+
+Get the database schema (field names and types).
+
+```javascript
+const schema = await client.getSchema()
+// Returns: { Title: 'title', Content: 'rich_text', PublishedAt: 'date', ... }
+```
+
+**Returns:** `Promise<Record<string, any>>`
+
 ## TypeScript Support
 
 The SDK is written in TypeScript and includes full type definitions.
@@ -113,7 +127,6 @@ The SDK is written in TypeScript and includes full type definitions.
 import { createClient, RelentlessItem, RelentlessConfig } from 'relentless-sdk'
 
 const config: RelentlessConfig = {
-  apiKey: 'your-api-key',
   username: 'johndoe',
   apiPath: 'blog'
 }
@@ -149,7 +162,6 @@ try {
 import { createClient } from 'relentless-sdk'
 
 const blog = createClient({
-  apiKey: process.env.RELENTLESS_API_KEY!,
   username: process.env.RELENTLESS_USERNAME!,
   apiPath: 'blog'
 })
@@ -177,7 +189,6 @@ import { createClient } from 'relentless-sdk'
 import { useState, useEffect } from 'react'
 
 const blog = createClient({
-  apiKey: import.meta.env.VITE_RELENTLESS_API_KEY,
   username: import.meta.env.VITE_RELENTLESS_USERNAME,
   apiPath: 'blog'
 })
@@ -207,7 +218,6 @@ function BlogList() {
 import { createClient } from 'relentless-sdk'
 
 const products = createClient({
-  apiKey: process.env.RELENTLESS_API_KEY,
   username: process.env.RELENTLESS_USERNAME,
   apiPath: 'products'
 })
